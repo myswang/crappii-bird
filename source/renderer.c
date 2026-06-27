@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Mike Wang
+// SPDX-License-Identifier: MIT
+
 #include "renderer.h"
 #include "background.h"
 #include "constants.h"
