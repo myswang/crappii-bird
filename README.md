@@ -2,11 +2,11 @@
 
 <img src="icon.png" alt="screenshot" width=400>
 
-*A crappy version of that famous mobile game, for Wii*
+*A crappy version of that famous mobile game, for the Wii*
 
 ## Installation
 
-Download the .zip file from the [Releases](https://github.com/myswang/crappi-bird/releases) page. Then extract and copy the files to the root of your SD card, just like any other homebrew application.
+Download the .zip file from the [Releases](https://github.com/myswang/crappii-bird/releases) page. Then extract and copy the files to the root of your SD card, just like any other homebrew application.
 
 ## Building from source
 
@@ -23,7 +23,7 @@ You can then compile the project with `make`, which will produce a `crappii-bird
 
 This project is a clone/remake of the original **Flappy Bird** created by **Dong Nguyen**, released for free under the **MIT License**. It was built entirely from scratch as a personal learning exercise for C and Wii homebrew development.
 
-This project, and all other homebrew projects for the Wii, would not be possible without the efforts of **Team Twiizers**, **devkitPro/libogc team**, and everyone involved in the Wii homebrew development scene.
+This project, and all other homebrew projects for the Wii, would not be possible without the efforts of **Team Twiizers**, **devkitPro/libogc team**, and everyone else involved in the Wii homebrew development scene.
 
 ## Asset Credits
 
