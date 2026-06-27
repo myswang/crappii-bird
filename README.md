@@ -16,7 +16,7 @@ You need to install **devkitPro** (Wii homebrew toolchain) and **GRRLIB** (graph
 
 [GRRLIB repository](https://github.com/GRRLIB/GRRLIB)
 
-You can then compile the project with `make`, which will produce a `crappii-bird.dol` binary that you can run on a Wii or Dolphin emulator.
+You can then compile the project with `make`, which will produce a `crappii-bird.dol` binary that you can run on a homebrewed Wii or Dolphin emulator.
 
 
 ## Acknowledgements
