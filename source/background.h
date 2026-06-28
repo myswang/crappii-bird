@@ -13,6 +13,6 @@ typedef struct Background {
 } Background;
 
 void Background_Init(Background *bg);
-void Background_Update(Background *bg, f32 delta_time);
+void Background_Update(Background *bg);
 
 #endif

@@ -25,6 +25,7 @@ typedef struct Game {
 } Game;
 
 void Game_Init(Game *game, s32 screen_width);
-void Game_Update(Game *game, f32 delta_time, bool flap);
+void Game_Reset(Game *game, s32 screen_width);
+void Game_Update(Game *game, bool flap);
 
 #endif

@@ -14,10 +14,10 @@ void Background_Init(Background *bg) {
     bg->forest_scroll_offset = 0.0f;
 }
 
-void Background_Update(Background *bg, f32 delta_time) {
-    bg->sky_scroll_offset += SKY_SPEED * delta_time;
-    bg->city_scroll_offset += CITY_SPEED * delta_time;
-    bg->forest_scroll_offset += FOREST_SPEED * delta_time;
+void Background_Update(Background *bg) {
+    bg->sky_scroll_offset += SKY_SPEED * DELTA_TIME;
+    bg->city_scroll_offset += CITY_SPEED * DELTA_TIME;
+    bg->forest_scroll_offset += FOREST_SPEED * DELTA_TIME;
 
     if (bg->sky_scroll_offset >= BG_WIDTH)
         bg->sky_scroll_offset -= BG_WIDTH;

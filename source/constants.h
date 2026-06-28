@@ -6,6 +6,7 @@
 
 #include "gctypes.h"
 
+extern const f32 DELTA_TIME;
 extern const s32 SCREEN_HEIGHT;
 
 extern const f32 BIRD_X;

@@ -4,6 +4,7 @@
 #include "game.h"
 #include "constants.h"
 #include "ogc/gu.h"
+#include "ogc/lwp_watchdog.h"
 #include "sound.h"
 #include <math.h>
 #include <stdlib.h>
@@ -24,6 +25,13 @@ static inline f32 lerp(f32 cur, f32 target, f32 alpha) {
 }
 
 void Game_Init(Game *game, s32 screen_width) {
+    srand((u32)gettime());
+    game->hi_score = 0;
+    game->score = 0;
+    Game_Reset(game, screen_width);
+}
+
+void Game_Reset(Game *game, s32 screen_width) {
     game->bird_y = SCREEN_HEIGHT / 2.0f;
     game->bird_vy = 0;
     game->bird_angle = 0;
@@ -42,14 +50,14 @@ void Game_Init(Game *game, s32 screen_width) {
     game->score = 0;
 }
 
-void Game_Update(Game *game, f32 delta_time, bool flap) {
+void Game_Update(Game *game, bool flap) {
     if (game->bird_state == BIRD_IDLE) {
-        game->idle_timer += delta_time;
+        game->idle_timer += DELTA_TIME;
         game->bird_y += sinf(game->idle_timer * 5.0f);
     }
 
     if (game->bird_state == BIRD_ALIVE) {
-        game->pipe_offset -= PIPE_SPEED * delta_time;
+        game->pipe_offset -= PIPE_SPEED * DELTA_TIME;
 
         if (game->pipe_offset <= -PIPE_H_SPACING) {
             game->pipe_offset += PIPE_H_SPACING;
@@ -65,7 +73,7 @@ void Game_Update(Game *game, f32 delta_time, bool flap) {
         game->bird_state = BIRD_ALIVE;
         Sound_Play(SFX_FLAP, 0, 255);
     } else if (game->bird_state != BIRD_IDLE) {
-        game->bird_vy += GRAVITY * delta_time;
+        game->bird_vy += GRAVITY * DELTA_TIME;
         if (game->bird_state != BIRD_DEAD) {
             if (game->bird_vy < 0)
                 game->bird_angle = lerp(game->bird_angle, -30.0f, 0.5f);
@@ -74,7 +82,7 @@ void Game_Update(Game *game, f32 delta_time, bool flap) {
         }
     }
 
-    game->bird_y += game->bird_vy * delta_time;
+    game->bird_y += game->bird_vy * DELTA_TIME;
 
     if (game->bird_y > SCREEN_HEIGHT - BIRD_SIZE) {
         game->bird_y = SCREEN_HEIGHT - BIRD_SIZE;
