@@ -57,7 +57,7 @@ void Renderer_DrawStr(Renderer *r, const char *str, s32 screen_width,
                       s32 font_size, s32 y) {
     s32 size = strlen(str);
     const f32 x = (f32)screen_width / 2 - ((f32)size * font_size / 2);
-    GRRLIB_PrintfTTF(x, y, r->font, str, font_size, GRRLIB_WHITE);
+    GRRLIB_PrintfTTF(x, y, r->font, str, font_size, GRRLIB_BLACK);
 }
 
 void Renderer_Draw(Renderer *r, Background *bg, Game *game, s32 screen_width) {
@@ -108,6 +108,7 @@ void Renderer_Draw(Renderer *r, Background *bg, Game *game, s32 screen_width) {
         Renderer_DrawStr(r, buf, screen_width, FONT_SIZE_M, 32);
         break;
     case BIRD_DEAD:
+        GRRLIB_Rectangle(0, 0, screen_width, SCREEN_HEIGHT, 0xFF00007F, true);
         Renderer_DrawStr(r, gg, screen_width, FONT_SIZE_M, MARGIN);
         if (game->score > game->hi_score) {
             snprintf(buf, sizeof(buf), "New Best! %d", game->score);
