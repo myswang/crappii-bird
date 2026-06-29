@@ -13,7 +13,7 @@ static const f32 BIRD_FLAP_Y = -400.0f;
 static const f32 GRAVITY = 1500.0f;
 static const f32 PIPE_SPEED = 240.0f;
 
-static inline s32 get_pipe_offset() { return (rand() % 186) + 244; }
+static inline s32 get_pipe_offset() { return (rand() % 236) + 194; }
 
 static inline bool check_aabb(f32 x1, f32 x2, f32 x3, f32 x4, f32 y1, f32 y2,
                               f32 y3, f32 y4) {
@@ -91,8 +91,8 @@ void Game_Update(Game *game, bool flap) {
         game->bird_state = BIRD_DEAD;
     }
 
-    if (game->bird_y <= -BIRD_SIZE)
-        game->bird_y = -BIRD_SIZE;
+    if (game->bird_y <= -70)
+        game->bird_y = -70;
 
     bool collided = false;
 
