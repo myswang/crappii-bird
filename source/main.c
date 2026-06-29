@@ -26,9 +26,7 @@ int main(void) {
     Game game;
     Game_Init(&game, screen_width);
 
-    bool running = true;
-
-    while (running && SYS_MainLoop()) {
+    while (SYS_MainLoop()) {
         WPAD_ScanPads();
         PAD_ScanPads();
         const u32 wiimote_down = WPAD_ButtonsDown(WPAD_CHAN_0);
@@ -37,22 +35,19 @@ int main(void) {
         if (wiimote_down & WPAD_BUTTON_HOME ||
             wiimote_down & WPAD_CLASSIC_BUTTON_HOME ||
             gcc_down & PAD_BUTTON_START)
-            running = false;
+            break;
 
-        if (running) {
-            if (game.bird_state == BIRD_IDLE || game.bird_state == BIRD_ALIVE)
-                Background_Update(&bg);
+        if (game.bird_state == BIRD_IDLE || game.bird_state == BIRD_ALIVE)
+            Background_Update(&bg);
 
-            bool flap =
-                (wiimote_down & WPAD_BUTTON_A || wiimote_down & WPAD_BUTTON_2 ||
-                 wiimote_down & WPAD_CLASSIC_BUTTON_A ||
-                 gcc_down & PAD_BUTTON_A);
-            if (game.bird_state == BIRD_DEAD && flap) {
-                Game_Reset(&game, screen_width);
-                flap = false;
-            }
-            Game_Update(&game, flap);
+        bool flap =
+            (wiimote_down & WPAD_BUTTON_A || wiimote_down & WPAD_BUTTON_2 ||
+             wiimote_down & WPAD_CLASSIC_BUTTON_A || gcc_down & PAD_BUTTON_A);
+        if (game.bird_state == BIRD_DEAD && flap) {
+            Game_Reset(&game, screen_width);
+            flap = false;
         }
+        Game_Update(&game, flap);
 
         Renderer_Draw(&renderer, &bg, &game, screen_width);
     }

@@ -13,6 +13,7 @@ static const f32 BIRD_FLAP_Y = -400.0f;
 static const f32 GRAVITY = 1500.0f;
 static const f32 PIPE_SPEED = 240.0f;
 
+// generate a new pipe offset, which is negative relative to the top of the screen
 static inline s32 get_pipe_offset() { return (rand() % 236) + 194; }
 
 static inline bool check_aabb(f32 x1, f32 x2, f32 x3, f32 x4, f32 y1, f32 y2,
@@ -51,14 +52,16 @@ void Game_Reset(Game *game, s32 screen_width) {
 }
 
 void Game_Update(Game *game, bool flap) {
+    // idle animation
     if (game->bird_state == BIRD_IDLE) {
         game->idle_timer += DELTA_TIME;
         game->bird_y += sinf(game->idle_timer * 5.0f);
     }
 
+    // update pipe positions
     if (game->bird_state == BIRD_ALIVE) {
         game->pipe_offset -= PIPE_SPEED * DELTA_TIME;
-
+        // spawn a new pipe when it goes offscreen
         if (game->pipe_offset <= -PIPE_H_SPACING) {
             game->pipe_offset += PIPE_H_SPACING;
             game->pipes[game->first_pipe_idx] = get_pipe_offset();
@@ -67,6 +70,7 @@ void Game_Update(Game *game, bool flap) {
         }
     }
 
+    // update bird physics
     if (flap && game->bird_state != BIRD_DYING &&
         game->bird_state != BIRD_DEAD) {
         game->bird_vy = BIRD_FLAP_Y;
@@ -81,9 +85,9 @@ void Game_Update(Game *game, bool flap) {
                 game->bird_angle = lerp(game->bird_angle, 90.0f, 0.1f);
         }
     }
-
     game->bird_y += game->bird_vy * DELTA_TIME;
 
+    // bird dies if it hits the ground
     if (game->bird_y > SCREEN_HEIGHT - BIRD_SIZE) {
         game->bird_y = SCREEN_HEIGHT - BIRD_SIZE;
         if (game->bird_state == BIRD_ALIVE)
@@ -91,11 +95,12 @@ void Game_Update(Game *game, bool flap) {
         game->bird_state = BIRD_DEAD;
     }
 
+    // prevent bird from flying over pipes
     if (game->bird_y <= -70)
         game->bird_y = -70;
 
+    // check if the bird collided with any pipe
     bool collided = false;
-
     for (s32 pipe_idx = 0; pipe_idx < PIPE_COUNT; pipe_idx++) {
         s32 i = (game->first_pipe_idx + pipe_idx) % PIPE_COUNT;
         f32 pipe_x = game->pipe_offset + pipe_idx * PIPE_H_SPACING;
@@ -113,7 +118,7 @@ void Game_Update(Game *game, bool flap) {
         if (pipe_x + PIPE_WIDTH < BIRD_X || pipe_x > BIRD_X + BIRD_SIZE)
             continue;
 
-        const s32 PAD = 5;
+        const s32 PAD = 5; // use a smaller hitbox than the actual sprite size
         bool top_pipe_collided = check_aabb(
             BIRD_X + PAD, BIRD_X + BIRD_SIZE - PAD, pipe_x, pipe_x + PIPE_WIDTH,
             game->bird_y + PAD, game->bird_y + BIRD_SIZE - PAD, -game->pipes[i],
